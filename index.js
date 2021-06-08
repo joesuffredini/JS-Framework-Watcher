@@ -1,23 +1,66 @@
 
 // var data = [];
 
-axios.get('https://api.github.com/repos/vuejs/vue')
-  .then(function (response) {
-    vueforks = response.data.forks;
-    vuewatchers = response.data.watchers;
-    vuestars = response.data.stargazers_count;
-    data = [vuestars, vuestars, vuewatchers, vuewatchers, vueforks, vueforks];
-    labels = ["Vue Stars", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
-    values = data;
-    chart = BuildChart(labels, values, "JS Framework");
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });
+const api_url1 = 'https://api.github.com/repos/vuejs/vue'
+const api_url2 = 'https://api.github.com/repos/angular/angular.js'
+const api_url3 = 'https://api.github.com/repos/emberjs/ember.js'
+const api_url4 = 'https://api.github.com/repos/sveltejs/svelte'
+const api_url5 = 'https://api.github.com/repos/facebook/react'
+
+
+// define async function for getapi
+async function getapi(url) {
+    
+  // Storing response
+  const response = await fetch(url);
+  // Storing data in form of JSON
+  var data = await response.json();
+  // console.log((data));
+  forks = data.forks;
+  watchers = data.watchers;
+  subs = data.subscribers_count;
+  values = [forks, watchers, subs];
+  labels = ["VueForks ", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
+}
+
+labels = ["VueForks ", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
+var urls = [api_url1, api_url2]
+var values = [];
+urls.forEach(function(url){
+  var data = getapi(url); 
+  console.log((data)); 
+  values.push(data);
+  console.log((values));
+});
+
+BuildChart(values, labels);
+
+
+// var values = getapi(api_url1);
+// console.log((values))
+// getapi(api_url2);
+// getapi(api_url3);
+// getapi(api_url4);
+// getapi(api_url5);
+// BuildChart(values, labels);
+
+// axios.get('https://api.github.com/repos/vuejs/vue')
+//   .then(function (response) {
+//     vueforks = response.data.forks;
+//     vuewatchers = response.data.watchers;
+//     vuestars = response.data.stargazers_count;
+//     data = [vuestars, vuestars, vuewatchers, vuewatchers, vueforks, vueforks];
+//     labels = ["Vue Stars", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
+//     values = data;
+//     chart = BuildChart(labels, values, "JS Framework");
+//   })
+//   .catch(function (error) {
+//     // handle error
+//     console.log(error);
+//   })
+//   .then(function () {
+//     // always executed
+//   });
 
       
 // axios request for angular
@@ -27,9 +70,6 @@ axios.get('https://api.github.com/repos/vuejs/vue')
 //     angwatchers = response.data.watchers;
 //     angstars = response.data.stargazers_count;
 //     data = [angforks, angwatchers, angstars];
-//     var labels = ["Ang Stargazers", "Ang Watchers", "Ang Forks"];
-//     var values = data;
-//     var chart = BuildChart(labels, values, "JS Framework");
 //   })
 //   .catch(function (error) {
 //     // handle error
@@ -90,7 +130,7 @@ axios.get('https://api.github.com/repos/vuejs/vue')
 //     // always executed
 //   }); 
 
-  function BuildChart(labels, values, charTitle) {
+  function BuildChart(values) {
   var ctx = document.getElementById("myChart").getContext("2d");
       var myChart = new Chart(ctx, {
         type: "bar",
@@ -98,7 +138,7 @@ axios.get('https://api.github.com/repos/vuejs/vue')
           labels: labels,
           datasets: [
             {
-              label: charTitle,
+              label: "JS Framework",
               data: values,
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
