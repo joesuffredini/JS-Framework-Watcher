@@ -1,48 +1,40 @@
 
-// var data = [];
-
-const api_url1 = 'https://api.github.com/repos/vuejs/vue'
-const api_url2 = 'https://api.github.com/repos/angular/angular.js'
-const api_url3 = 'https://api.github.com/repos/emberjs/ember.js'
-const api_url4 = 'https://api.github.com/repos/sveltejs/svelte'
-const api_url5 = 'https://api.github.com/repos/facebook/react'
-
+var apiurl1 = 'https://api.github.com/repos/vuejs/vue';
+var apiurl2 = 'https://api.github.com/repos/angular/angular.js';
+var apiurl3 = 'https://api.github.com/repos/emberjs/ember.js';
+var apiurl4 = 'https://api.github.com/repos/sveltejs/svelte';
+var apiurl5 = 'https://api.github.com/repos/facebook/react';
 
 // define async function for getapi
-async function getapi(url) {
-    
+async function getapi(url, string) {    
   // Storing response
   const response = await fetch(url);
   // Storing data in form of JSON
-  var data = await response.json();
-  // console.log((data));
+  data = await response.json();
   forks = data.forks;
   watchers = data.watchers;
   subs = data.subscribers_count;
   values = [forks, watchers, subs];
-  labels = ["VueForks ", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
+  console.log((values));
+  if (string == "vuejs"){
+  BuildVueChart(values, labels);}
+  else if (string == "angjs")
+  { BuildVueChart(values, labels);}
 }
 
-labels = ["VueForks ", "Anguler Stars", "Vue Watchers", "Angular Watchers","Vue Forks", "Angular Forks"];
-var urls = [api_url1, api_url2]
-var values = [];
-urls.forEach(function(url){
-  var data = getapi(url); 
-  console.log((data)); 
-  values.push(data);
-  console.log((values));
-});
+labels = ["VueForks ", "Vue Stars", "Vue Watchers"];
+getapi(apiurl1, "vuejs");
+labels = ["AngForks ", "Ang  Stars", "Ang Watchers"]
+getapi(apiurl2, "angjs");
 
-BuildChart(values, labels);
-
-
-// var values = getapi(api_url1);
-// console.log((values))
-// getapi(api_url2);
-// getapi(api_url3);
-// getapi(api_url4);
-// getapi(api_url5);
+// getapi(apiurl2);
+// getapi(apiurl3);
+// getapi(apiurl4);
+// var values = getapi(apiurl5);
+// console.log((values));
 // BuildChart(values, labels);
+
+
 
 // axios.get('https://api.github.com/repos/vuejs/vue')
 //   .then(function (response) {
@@ -130,7 +122,7 @@ BuildChart(values, labels);
 //     // always executed
 //   }); 
 
-  function BuildChart(values) {
+  function BuildVueChart(values) {
   var ctx = document.getElementById("myChart").getContext("2d");
       var myChart = new Chart(ctx, {
         type: "bar",
@@ -138,7 +130,7 @@ BuildChart(values, labels);
           labels: labels,
           datasets: [
             {
-              label: "JS Framework",
+              label: "Vue JS Framework",
               data: values,
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
@@ -174,3 +166,5 @@ BuildChart(values, labels);
       });
       return myChart;
     }
+
+    
